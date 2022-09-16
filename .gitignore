@@ -1,6 +1,13 @@
 HELP.md
 target/
 .mvn/
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.env
+.aws/
+.ssh/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
