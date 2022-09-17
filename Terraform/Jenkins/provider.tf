@@ -9,6 +9,13 @@ terraform {
   
   # Define AWS as a provider
   provider "aws" {
-    profile = "nadaslissa"
+    profile = "terraform"
     region = var.aws_region
+    default_tags {
+    tags = {
+      Environment = "Development"
+      Project     = "Movie Database"
+      Version     = "1.0"
+    }
+  }
   }
