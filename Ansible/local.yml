@@ -1,0 +1,13 @@
+---
+- name: Setting up ansible
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  become: yes
+
+  vars_files:
+    - './vars/main.yml'
+
+  roles:
+    - terraform
+    - setup

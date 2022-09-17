@@ -1,0 +1,10 @@
+---
+- name: Setting up jenkins server
+  hosts: jenkins
+  become: yes
+
+  roles:
+    - docker
+    - jenkins
+    - aws
+    - terraform
