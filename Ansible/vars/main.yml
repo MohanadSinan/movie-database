@@ -1,0 +1,6 @@
+---
+aws_profile: terraform
+aws_access_key_id: XXXXXX
+aws_secret_access_key: XXXXXXXXXXXX
+aws_region: us-east-1
+aws_output: text
