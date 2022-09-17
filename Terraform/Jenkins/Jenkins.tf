@@ -66,7 +66,7 @@ resource "aws_instance" "Jenkins" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = var.instance_type
   key_name               = var.key_name
-  vpc_security_group_ids = ["${aws_security_group.SG.id}"]
+  vpc_security_group_ids = ["${aws_security_group.default.id}"]
 
   tags = {
     Name = var.instance_name
