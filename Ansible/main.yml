@@ -1,15 +1,23 @@
 ---
-- hosts: jenkins
+- name: Setting up ansible
+  hosts: localhost
+  gather_facts: false
   connection: local
-  become: True
+  become: yes
 
   vars_files:
-    #- 'local_settings.yml'
-    - './vars/users.yaml'
+    - './vars/main.yml'
 
   roles:
-    - role: docker
-    - role: jenkins
-    - role: aws
-    - role: terraform
+    - terraform
+    - setup
 
+- name: Setting up jenkins server
+  hosts: jenkins
+  become: True
+
+  roles:
+    - docker
+    - jenkins
+    - aws
+    - terraform
