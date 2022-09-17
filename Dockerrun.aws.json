@@ -1,0 +1,11 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "registry.hub.docker.com/nadaame/movie-database:latest"
+    },
+    "Ports": [
+      {
+        "ContainerPort": 8080
+      }
+    ]
+  }
