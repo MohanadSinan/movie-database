@@ -1,10 +1,4 @@
 ---
-aws_profile: terraform
-aws_access_key_id: XXXXXX
-aws_secret_access_key: XXXXXXXXXXXX
-aws_region: us-east-1
-aws_output: text
-
 terraform_version: latest
 terraform_path: "/usr/local/bin/"
 terraform_pkg_url: "https://releases.hashicorp.com/terraform/{{ terraform_version_to_install }}/terraform_{{ terraform_version_to_install }}_{{ os_type }}_amd64.zip"
