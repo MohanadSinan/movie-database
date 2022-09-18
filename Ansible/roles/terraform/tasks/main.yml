@@ -1,92 +1,33 @@
 ---
-- name: Install needed helper package(s)
-  become: true
-  become_method: sudo
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - unzip
+- name: Find all versions of Terraform
+  uri:
+    url: https://releases.hashicorp.com/terraform/index.json
+    return_content: yes
+  register: terraform_index
+  when: terraform_version == "latest"
+  check_mode: no
 
-- name: Check for previously installed and executable terraform
-  shell: "terraform version | head -n1 | awk '{print $2}' | awk -F'-' '{print $1}' | sed 's/v//'"
-  changed_when: False
-  failed_when: False
-  register: prior_terraform_version
-
-- name: Previous terraform version
-  debug:
-    var: prior_terraform_version.stdout
-
-- name: Convert architecture fact to what terraform url structure expects - amd64
+- name: Finds the latest Terraform version when latest var is define
   set_fact:
-    override_ansible_userspace_architecture: amd64
-  when: ansible_userspace_architecture == "x86_64"
+    terraform_version_to_install: "{{ (terraform_index.content | from_json).versions | reject('search','-') | list | sort_versions | last }}"
+  when: terraform_version == 'latest'
 
-- name: Build base part of terraform filename
+- name: Use the specified Terraform version when latest var is not define
   set_fact:
-    terraform_filename: "terraform_{{ terraform_version }}_{{ ansible_system|lower }}_{{ override_ansible_userspace_architecture|default('ansible_userspace_architecture') }}.zip"
+    terraform_version_to_install: "{{ terraform_version }}"
+  when: terraform_version != 'latest'
 
-- name: Get terraform sha256sums
-  get_url:
-    url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS"
-    dest: "/tmp/terraform_{{ terraform_version }}_SHA256SUMS"
-  when: prior_terraform_version.stdout != terraform_version
+# This task avoids downloading Terraform every time
+- name: Check if Terraform is present with the right version
+  command: "{{ terraform_path }}/terraform -version"
+  register: terraform_installed_version
+  ignore_errors: yes
+  changed_when: false
+  failed_when: false
 
-- name: Get terraform sha256sum signatures
-  get_url:
-    url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/terraform_{{ terraform_version }}_SHA256SUMS.sig"
-    dest: "/tmp/terraform_{{ terraform_version }}_SHA256SUMS.sig"
-  failed_when: False
-  when: prior_terraform_version.stdout != terraform_version
-
-- name: Import the Hashicorp Security gpg key
-  become: true
-  become_method: sudo
-  shell: curl https://keybase.io/hashicorp/key.asc | gpg --import
-  args:
-    warn: False
-  changed_when: False
-  when: prior_terraform_version.stdout != terraform_version
-
-- name: Verify the signature file is untampered
-  become: true
-  become_method: sudo
-  command: "gpg --verify /tmp/terraform_{{ terraform_version }}_SHA256SUMS.sig /tmp/terraform_{{ terraform_version }}_SHA256SUMS"
-  register: sha256_check
-  changed_when: False
-  failed_when: '"Good signature from \"HashiCorp Security (hashicorp.com/security) <security@hashicorp.com>\"" not in sha256_check.stderr'
-  when: prior_terraform_version.stdout != terraform_version
-
-- name: "Gather signature for {{ terraform_filename }}"
-  shell: "grep '{{ terraform_filename }}' /tmp/terraform_{{ terraform_version }}_SHA256SUMS | awk '{print $1}'"
-  changed_when: False
-  register: terraform_signature
-  when: prior_terraform_version.stdout != terraform_version
-
-- name: "Download {{ terraform_filename }}"
-  get_url:
-    url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/{{ terraform_filename }}"
-    dest: "/tmp/{{ terraform_filename }}"
-    checksum: "sha256:{{ terraform_signature.stdout }}"
-    owner: root
-    group: root
-    mode: 0444
-  when: prior_terraform_version.stdout != terraform_version
-
-- name: Install terraform from the zip
-  become: true
-  become_method: sudo
+- name: Install Terraform
   unarchive:
-    src: "/tmp/{{ terraform_filename }}"
-    dest: "/bin"
-    copy: no
-    mode: 0775
-    owner: root
-    group: root
-    seuser: system_u
-    serole: object_r
-    setype: bin_t
-    selevel: s0
-  when: prior_terraform_version.stdout != terraform_version
-...
+    src: "{{ terraform_pkg_url }}"
+    dest: "{{ terraform_path }}"
+    remote_src: yes
+  when: terraform_version_to_install not in ( terraform_installed_version.stdout_lines | default(['empty'], true) | first )
