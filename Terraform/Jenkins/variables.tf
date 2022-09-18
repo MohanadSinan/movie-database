@@ -22,7 +22,7 @@ variable "instance_name" {
 
 variable "instance_type" {
   description = "instance type"
-  default     = "t2.micro"
+  default     = "t2.mediam"
 }
 
 variable "key_name" {
