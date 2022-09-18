@@ -15,6 +15,12 @@
   apt: name=jenkins update_cache=yes
   become: yes
 
+- name: Add Jenkins user to docker group
+  user:
+    name: jenkins
+    groups: docker
+  notify: Restart Jenkins
+
 - name: ensure jenkins is running
   service: name=jenkins state=started
   become: yes
