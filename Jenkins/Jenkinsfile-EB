@@ -10,24 +10,19 @@ pipeline {
     }
 
     stages {
-        stage('Test') {
-            steps {
-				sh 'pwd'
-			}
-        }
         stage('Terraform Init') {
             steps {
-				sh 'terraform -chdir=./Jenkins/Terraform/EB init'
+				sh 'terraform -chdir=Jenkins/Terraform/EB init'
 			}
         }
         stage('Terraform Validate') {
            steps {
-				sh 'terraform -chdir=./Jenkins/Terraform/EB validate'
+				sh 'terraform -chdir=Jenkins/Terraform/EB validate'
 			}
         }
         stage('Terraform Apply') {
             steps {
-				sh 'terraform -chdir=./Jenkins/Terraform/EB apply -auto-approve'
+				sh 'terraform -chdir=Jenkins/Terraform/EB apply -auto-approve'
 			}
         }
     }
