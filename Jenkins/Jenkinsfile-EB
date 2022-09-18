@@ -10,24 +10,19 @@ pipeline {
     }
 
     stages {
-        stage('Test') {
-            steps {
-				sh 'pwd'
-			}
-        }
         stage('Terraform Init') {
             steps {
-				sh 'terraform -chdir=../../../Jenkins/Terraform/CloudFront init'
+				sh 'terraform -chdir=./Jenkins/Terraform/CloudFront init'
 			}
         }
         stage('Terraform Validate') {
            steps {
-				sh 'terraform -chdir=../../../Jenkins/Terraform/CloudFront validate'
+				sh 'terraform -chdir./Jenkins/Terraform/CloudFront validate'
 			}
         }
         stage('Terraform Apply') {
             steps {
-				sh 'terraform -chdir=../../../Jenkins/Terraform/CloudFront apply -auto-approve'
+				sh 'terraform -chdir./Jenkins/Terraform/CloudFront apply -auto-approve'
 			}
         }
     }
