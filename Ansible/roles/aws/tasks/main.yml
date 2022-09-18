@@ -1,6 +1,6 @@
 ---
 - name: Install AWS Command Line Interface (CLI)
-  apt-get:
+  apt:
     name: awscli
     state: present
     update_cache: yes
