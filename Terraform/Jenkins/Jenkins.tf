@@ -68,6 +68,11 @@ resource "aws_instance" "Jenkins" {
   key_name               = var.key_name
   vpc_security_group_ids = ["${aws_security_group.default.id}"]
 
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp2"
+  }
+
   tags = {
     Name = var.instance_name
   }
