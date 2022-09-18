@@ -9,7 +9,6 @@ terraform {
 
 # Define AWS as a provider
 provider "aws" {
-  profile = "terraform"
   region  = var.aws_region
   default_tags {
     tags = {
