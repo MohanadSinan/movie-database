@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Terraform Init') {
-            steps {
-				sh 'terraform -chdir=Terraform/EB init'
-                sh 'terraform -chdir=Terraform/CloudFront init'
-			}
-        }
         stage('Terraform Destroy') {
             steps {
 				sh 'terraform -chdir=Terraform/EB destroy -auto-approve'
