@@ -12,7 +12,7 @@ pipeline {
 		// AWS EB
         AWS_EB_APP_NAME 	  = "movie-database"
         AWS_EB_APP_VERSION	  = "${BUILD_ID}"
-        AWS_EB_ENVIRONMENT    = "Moviedatabase-env"
+        AWS_EB_ENVIRONMENT    = "movie-database-env"
         // DOCKER INFO 
         DOCKERHUB_CREDENTIALS = credentials('docker-token')
         DOCKER_IMAGE_NAME	  = "nadaame/movie-database"
