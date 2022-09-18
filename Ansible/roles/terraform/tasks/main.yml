@@ -1,4 +1,8 @@
 ---
+- name: ensure unzip is installed
+  apt: name=unzip update_cache=yes
+  become: yes
+
 - name: Find all versions of Terraform
   uri:
     url: https://releases.hashicorp.com/terraform/index.json

@@ -1,26 +1,20 @@
 ---
-- name: Add Jenkins-CI Repository Key
-  apt_key:
-    url: "http://pkg.jenkins.io/{{ ansible_os_family|lower }}/jenkins.io.key"
-    state: present
+- name: ensure the jenkins apt repository key is installed
+  apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+  become: yes
 
-- name: Add Jenkins-CI Repository
-  apt_repository:
-    repo: 'deb http://pkg.jenkins.io/{{ ansible_os_family|lower }} binary/'
-    state: present
-    update_cache: yes
+- name: ensure the repository is configured
+  apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+  become: yes
 
-- name: Install Jenkins-CI
-  apt:
-    name: jenkins
-    state: present
-    update_cache: yes
-    cache_valid_time: 600
-  notify:
-    - Restart Jenkins
+- name: ensure java is installed
+  apt: name=openjdk-11-jre-headless update_cache=yes
+  become: yes
 
-- name: Add Jenkins user to docker group
-  user:
-    name: jenkins
-    groups: docker
-  notify: Restart Jenkins
+- name: ensure jenkins is installed
+  apt: name=jenkins update_cache=yes
+  become: yes
+
+- name: ensure jenkins is running
+  service: name=jenkins state=started
+  become: yes
