@@ -12,17 +12,17 @@ pipeline {
     stages {
         stage('Terraform Init') {
             steps {
-				sh 'terraform -chdir=../Terraform/CloudFront init'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/CloudFront init'
 			}
         }
         stage('Terraform Validate') {
            steps {
-				sh 'terraform -chdir=../Terraform/CloudFront validate'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/CloudFront validate'
 			}
         }
         stage('Terraform Apply') {
             steps {
-				sh 'terraform -chdir=../Terraform/CloudFront apply -auto-approve'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/CloudFront apply -auto-approve'
 			}
         }
     }

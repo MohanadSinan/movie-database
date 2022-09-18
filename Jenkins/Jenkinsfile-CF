@@ -12,17 +12,17 @@ pipeline {
     stages {
         stage('Terraform Init') {
             steps {
-				sh 'terraform -chdir=../Terraform/EB init'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/EB init'
 			}
         }
         stage('Terraform Validate') {
            steps {
-				sh 'terraform -chdir=../Terraform/EB validate'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/EB validate'
 			}
         }
         stage('Terraform Apply') {
             steps {
-				sh 'terraform -chdir=../Terraform/EB apply -auto-approve'
+				sh 'terraform -chdir=$home/movie-database/Jenkins/Terraform/EB apply -auto-approve'
 			}
         }
     }
