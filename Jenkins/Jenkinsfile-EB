@@ -10,6 +10,10 @@ pipeline {
     }
 
     stages {
+        stage('Test') {
+            steps {
+				sh 'pwd'
+			}
         stage('Terraform Init') {
             steps {
 				sh 'terraform -chdir=./Jenkins/Terraform/EB init'
