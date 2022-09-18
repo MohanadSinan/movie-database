@@ -11,7 +11,7 @@ pipeline {
         ARTIFACT_NAME		  = "Dockerrun.aws.json"
 		// AWS EB
         AWS_EB_APP_NAME 	  = "movie-database"
-        AWS_EB_APP_VERSION	  = ${BUILD_ID}
+        AWS_EB_APP_VERSION	  = "${BUILD_ID}"
         AWS_EB_ENVIRONMENT    = "Moviedatabase-env"
         // DOCKER INFO 
         DOCKERHUB_CREDENTIALS = credentials('docker-token')
