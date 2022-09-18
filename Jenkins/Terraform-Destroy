@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+
+    stages {
+        stage('Terraform Init') {
+            steps {
+				sh 'terraform -chdir=Terraform/EB init'
+                sh 'terraform -chdir=Terraform/CloudFront init'
+			}
+        }
+        stage('Terraform Destroy') {
+            steps {
+				sh 'terraform -chdir=Terraform/EB destroy -auto-approve'
+                sh 'terraform -chdir=Terraform/CloudFront destroy -auto-approve'
+			}
+        }
+    }
+}
