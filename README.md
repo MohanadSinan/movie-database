@@ -2,7 +2,9 @@
 
 **(Simple Java Spring Boot Web Application)**
 
-<img src="https://i.imgur.com/Dg0Iixll.png" alt="movie-database screenshot" />
+<p align="center">
+<img src="https://i.imgur.com/Dg0Iixl.png" alt="movie-database screenshot" width=400 />
+</p>
 
 In this project we implemented what we learned in DevOps Bootcamp. We will deploy a simple java spring boot web application on AWS Elastic Beanstalk with high-availability infrastructure (Load Balanced) using Terraform as infrastructure as a code (IaC), Ansible as a configuration management tool and Jenkins as CI/CD.
 
@@ -20,13 +22,13 @@ In this project we implemented what we learned in DevOps Bootcamp. We will deplo
 
    ↳  ([Dockerrun.aws.json](/Dockerrun.aws.json))
 
-2. Write Terraform to create EC2 (let's call it Jenkins) ----------------------------> **Terraform file 1**
+2. Write Terraform to create EC2 (let's call it Jenkins) --------------------------------> **Terraform file 1**
 
    ↳  ([Jenkins.tf](Terraform/Jenkins/Jenkins.tf))
 
    ---
 
-3. Install (Jenkins, Docker, AWS CLI) in that EC2 using Ansible --------------> **Ansible Playbook** with roles to install
+3. Install (Jenkins, Docker, AWS CLI) in that EC2 using Ansible ----------------------> **Ansible Playbook** with roles to install
 
    ↳  ([./Ansible/jenkins.yml](Ansible/jenkins.yml))
 
@@ -44,25 +46,25 @@ In this project we implemented what we learned in DevOps Bootcamp. We will deplo
 
 ---
 
-5. Write Terraform to create EB (most have load balancer) --------------------> **Terraform file 2**
+5. Write Terraform to create EB (most have load balancer) -------------------------> **Terraform file 2**
 
    ↳  ([EB.tf](Terraform/EB/EB.tf))
 
-6. Write Jenkinsfile pipeline to apply Terraform file 2 (EB.tf) ------------------> **Jenkinsfile 1**
+6. Write Jenkinsfile pipeline to apply Terraform file 2 (EB.tf) ------------------------> **Jenkinsfile 1**
 
    ↳  ([Jenkinsfile-EB](Jenkins/Jenkinsfile-EB))
 
-7. Write Jenkinsfile pipeline to deploy (update) the EB ---------------------------> **Jenkinsfile 2*
+7. Write Jenkinsfile pipeline to deploy (update) the EB -----------------------------> **Jenkinsfile 2**
 
    ↳  ([Jeinkinsfile-Deploy](Jenkins/Jeinkinsfile-Deploy))
 
    ---
    
-8. Write Terraform to create CloudFront on EB ----------------------------------------> **Terraform file 3*
+8. Write Terraform to create CloudFront on EB --------------------------------------> **Terraform file 3**
 
    ↳  ([CloudFront.tf](Terraform/CloudFront/CloudFront.tf))
 
-9. Write Jenkinsfile pipeline to apply Terraform file 3 (CloudFront.tf) ------> **Jenkinsfile 3*
+9. Write Jenkinsfile pipeline to apply Terraform file 3 (CloudFront.tf) ---------------> **Jenkinsfile 3**
 
    ↳  ([Jenkinsfile-CF](Jenkins/Jenkinsfile-CF))
 
